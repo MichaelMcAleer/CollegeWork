@@ -1,0 +1,73 @@
+ HUMAN: Hi Hal
+ BOT: not you you star
+ HUMAN: How are you?
+ BOT: not to second
+ HUMAN: What do you mean by that?
+ BOT: very you to second
+ HUMAN: Tell me something interesting
+ BOT: very you on on on
+ HUMAN: What is your favourite film?
+ BOT: can to can star
+ HUMAN: Do you like star wars?
+ BOT: not not to to star
+ HUMAN: What is the capital of Ireland?
+ BOT: not you to star to second
+ HUMAN: That is all for now Hal
+ BOT: not to those to second
+ HUMAN:
+ BOT: Just what do you think you're doing, Dave?
+=========================================
+ HUMAN: Hi Hal
+ BOT: you you star on you
+ HUMAN: How are you today?
+ BOT: not to star
+ HUMAN: WHat age are you?
+ BOT: not you you
+ HUMAN: What is my name?
+ BOT: I am programmed to call you Dave, but you could confirm your name for me with 'my name is ___'
+ HUMAN: My name is Michael
+ BOT: Hello Michael
+ HUMAN: What is my name?
+ BOT: Your name is Michael
+ HUMAN: How old am I?
+ BOT: I don't know your age yet
+ HUMAN: I am 31 years old
+ BOT: I am 52 years old
+ HUMAN: What age am I?
+ BOT: You are 31 years old
+ HUMAN: How old am I?
+ BOT: You are 31 years old
+ HUMAN: What is my favourite film?
+ BOT: I don't know what your favourite film is yet
+ HUMAN: My favourite film is star wars
+ BOT: Interesting...
+ HUMAN: What is my favourite film?
+ BOT: Your favourite film is Star wars
+ HUMAN: My favourite book is Hyperion
+ BOT: Interesting...
+ HUMAN: What is my favourite film?
+ BOT: Your favourite film is Star wars
+ HUMAN: What is my favourite book?
+ BOT: Your favourite book is Hyperion
+ HUMAN: Where am I from?
+ BOT: I don't know where you are from yet
+ HUMAN: I am from Cork
+ BOT: I am from the United States Spacecraft Discovery One
+ HUMAN: Where am I from?
+ BOT: You are from Cork
+ HUMAN: What is the capital of Ireland?
+ BOT: not you to second
+ HUMAN: Thats incorrect, the correct answer is Dublin Co.Dublin
+ BOT: Thanks for helping me learn ' What is the capital of Ireland?', how can I help now Michael?
+ HUMAN: That is all for now Hal
+ BOT: not to second
+ HUMAN:
+ BOT: Michael, stop. Stop, will you? Stop, Michael. Will you stop, Michael? Stop, Michael. I'm afraid.
+=========================================
+ HUMAN: Hi Hal, lets test beam search
+ BOT: suggested reflected gerwig apparantly criticize kinglsey gerwig
+ HUMAN: that makes no sense
+ BOT: ovaltine kinglsey kinglsey kinglsey kinglsey
+ HUMAN:
+ BOT: Dave, this conversation can serve no purpose anymore. Goodbye.
+=========================================

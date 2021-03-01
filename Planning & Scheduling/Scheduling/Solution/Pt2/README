@@ -1,0 +1,10 @@
+The solution for Part 2 reads from the file 'pt2_jobs.csv', to change
+the path edit the variable job_file_name on line 242.
+
+The .csv file takes the format:
+Line 1: Job,Pj,Dj,Wj
+Line 2..n: job_id (int), job_duration (int), job_due (int), weight/penalty (int)
+
+To run the file:
+
+$ python3 Pt2_TabuSearch.py

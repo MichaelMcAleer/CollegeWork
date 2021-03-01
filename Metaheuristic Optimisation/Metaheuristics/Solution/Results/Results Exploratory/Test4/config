@@ -1,0 +1,6 @@
+-based on config 6
+    -iterations to 1000
+    -runs to 10
+    -best is used each time, 2nd parent selected using roulette
+    -elite survival of 20% from run to run
+    -mutation rate of 0.5

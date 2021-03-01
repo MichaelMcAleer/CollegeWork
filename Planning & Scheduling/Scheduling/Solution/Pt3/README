@@ -1,0 +1,11 @@
+The solution for Part 3 reads from the file 'pt3_meetings.csv', to change
+the path edit the variable meetings_file_name on line 124.
+
+The .csv file takes the format:
+Line 1: Meetings, 1, 2, ..., n
+Line 2: Lecturer Name (str), meeting_1_sch (bool), meeting_2_sch (bool), meeting_n_sch (bool)
+Line ...
+Line j: Lecturer Name (str), meeting_1_sch (bool), meeting_2_sch (bool), meeting_n_sch (bool)
+To run the file:
+
+$ python3 Pt3_Timetabling.py

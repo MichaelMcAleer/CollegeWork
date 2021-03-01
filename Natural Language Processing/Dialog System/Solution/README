@@ -1,0 +1,284 @@
+# -----------------------------------------------------
+# Natural Language Processing
+# Assignment 3 - Dialogue System
+# Michael McAleer R00143621
+# -----------------------------------------------------
+
+DeepQA - H.A.L. 9000
+====================
+A fully functioning neural chat bot using sequence-to-sequence model with
+attention decoder based on the personality HAL from the 1968 film '2001: A
+Space Odyssey'.
+
+This is based on the model DeepQA model [1] adapted by Chip Huyen for use in
+Stanford module 'CS20: TensorFlow for Deep Learning Research' [2][3].
+
+
+Chat bot Configuration
+=====================
+Where to find the configuration file
+------------------------------------
+A number of configuration options are available for the chat bot in the file
+'cb_config.py'
+
+Path: '/Baseline_Chatbot/cb_config.py'
+
+ROOT_DIR
+--------
+The most important of these which must be set for your environment is ROOT_DIR,
+this value must be the path to the 'Baseline_Chatbot' directory, there are
+options in the configuration file for running the Chat bot in Google Colab or
+on a local machine.
+
+Self-Dialogue Corpus Topics
+---------------------------
+All corpus files are included with the chat bot so there is no need to source
+these and extract into the relevant directories. If you would like to specify
+what topics to use from the 'Self-Dialogue Corpus' (see 'Assignment
+Specification Improvements' section below for more information on corpus),
+you can specify these in the configuration option 'SELFD_TOPICS' in fhe format
+of a Python list. To use all topics from this corpus leave the list empty.
+
+Chat bot Dialogue Sequence Lengths
+---------------------------------
+The dialogue limits enforced by the chat bot model are determined by the size
+of the data buckets in-use by the model. These data buckets store various
+sequences of dialogue that are equal to or less than (with padding) to the
+encoder and decoder sequence length values.  Bucket sequence lengths can be
+set in the configuration option 'BUCKETS'.
+
+This 'BUCKETS' configuration option contains a list of tuples, with each tuple
+representing a maximum encoder (user-input) length and a maximum decoder
+(chat bot response) length, the more tuples this list contains the more data
+buckets that will be in use. Having more data buckets or buckets with large
+sequence lengths has a significant impact on the time taken to train the model.
+
+For the purposes of this work the sequence lengths have been reduced from the
+chat bot this work is based on [3], there is no need to have the chat bot accept
+or return large complex sentences. Limiting the length will also give the
+advantage of less complex sentences to learn and possibly provide more legible
+and relevant responses for the chat bot.
+
+Training & Test Dataset Size
+----------------------------
+The size of the training dataset and what percentage of it to reserve for
+evaluation is set using 'TRAIN_SET_SIZE' and 'TEST_SET_SIZE_PERCENT'.
+
+Model Settings
+--------------
+A number of settings can be set that are specific to the chat bot model,
+these include:
+- OPTIMISER: The optimiser in use by the model, options are 'adam' (Adam
+             optimiser) and 'sgd' (Stochastic Gradient Descent optimiser)
+- LR: The learning rate in use by the optimiser
+- NUM_LAYERS: The amount of layers in the model network
+- BATCH_SIZE: The batch size of data used during training
+- DROPOUT: Dropout rate to apply to the layers in the network
+- MAX_GRAD_NORM: Maximum gradient normalisation scaling value to avoid
+                 exploding gradients
+- DECODE_MODE: The decoding algorithm in use, options are 'argmax' (default)
+               and 'beam' (beam-search)
+- BEAM_DEBUG: Output the 3 best sampled responses from the beam-search decoder
+- NUM_SAMPLES: The amount of samples the decoder should select before decoding
+- ENC_VOCAB: The length of the encoder vocabulary, this is set automatically
+             after data has been processed
+- DEC_VOCAB: The length of the decoder vocabulary, this is set automatically
+             after data has been processed
+
+
+Requirements
+============
+- Python 3.6 or higher
+- Tensorflow 1.14
+- Numpy 1.16.3 or higher
+
+
+Chat bot Usage
+=============
+Step 1: Update config.py
+        Update with the path to the baseline chat bot root directory, change
+        ROOT_DIR to suit your environment
+
+Step 2: $ python cb_data.py
+        Process the corpora to get it into the format required for the model,
+        this step can be skipped if desired because processed data is included
+        in the submission. Data will be output into the directory specified in
+        the configuration file option 'PROCESSED_PATH'
+
+Step 3: python3 chatbot.py --mode train
+        Train the chat bot on the processed corpus, if a processed corpus does
+        not exist it will be carried out before training is commenced. This
+        step can be skipped as a model checkpoint has been included in the
+        submission. Checkpoints will be output into the directory specified in
+        the configuration file option 'CPT_PATH'
+
+Step 4: python chatbot.py --mode chat
+        Chat with the chat bot, a model checkpoint is required from step 3. You
+        will also need to update the path in the checkpoint file within the
+        checkpoint folder to match the path to the checkpoints in your own
+        environment
+
+Notes:
+- If you want to train from scratch delete the checkpoints directory
+- If the mode is chat you will go into interaction mode with the chat bot in
+  the terminal
+- By default all conversations you have with the chat bot will be output the
+  file designated in the configuration file OUTPUT_FILE
+
+
+Chat bot Interaction
+===================
+Interaction with the chat bot is handled via the command line, simply type in
+your statement or question when prompted with '> ', HAL will respond after with
+a response (note: if using beam-search this will take a bit longer than the
+argmax decoder). To exit the chat bot interaction press 'Enter' without
+inputting any text, this is required to save HALs long term memory to file.
+
+Teaching HAL short-term with
+----------------------------
+You can tell HAL your name, age, where you are from, and your favourite things
+and it will remember them to short term memory (not persisted after the session
+ends:
+
+Example:
+    > What is my name?
+    HAL: I am programmed to call you Dave, but you could confirm
+         your name for me with 'my name is ___'
+    > My name is Michael
+    HAL: Hello Michael
+    > What is my name?
+    HAL: Your name is Michael
+    > What age am I?
+    HAL: I don't know your age yet Michael
+    > I am 31 years old
+    HAL: I am 52 years old
+    > What age am I?
+    HAL: You are 31 years old
+    > How old am I?
+    HAL: You are 31 years old
+    > I am from Cork
+    HAL: I am from the United States Spacecraft Discovery One
+    > Where am I from?
+    HAL: You are from Cork
+    > My favourite book is Hyperion
+    HAL: Interesting
+    > What is my favourite book?
+    HAL: Your favourite book is Hyperion
+    > What is my favourite film?
+    HAL: I don't know what your favourite film is yet
+    > My favourite film is Star Wars
+    HAL: Interesting
+    > What is my favourite film?
+    HAL: Your favourite film is Star wars
+
+Teaching HAL long-term with a feedback loop
+-------------------------------------------
+If HAL responds to a question with an incorrect answer you can correct it so
+it will save the correct answer to its long-term memory. All dialogue between
+the user and HAL is saved to short-term memory but this is erased after each
+session ends, only long-term memory is written to file.
+
+When HAL responds incorrectly you can correct it by typing variations of:
+    'Thats incorrect, the correct answer is ________'
+    'That is incorrect, the correct answer is ________'
+    'Thats incorrect the correct answer is ________'
+
+The main part of the text that matters to HAL is 'incorrect', 'the', 'correct',
+'answer', and 'is' feature in the sentence, HAL will assume that the answer
+follows the last 'is' in the input sequence.
+
+Example:
+    > What is the capital of Ireland?
+    HAL: Cork
+    > To some! Thats incorrect however, the correct answer is Dublin Co.Dublin
+    HAL: Thanks for helping me learn 'what is the capital of ireland', how can
+         I help now Dave?
+
+After this interaction the question poised by the user 'what is the capital of
+ireland' and the correct answer 'dublin co dublin' will be saved to HALs long
+term memory.
+
+In order to preserve HALs long term memory you must exit the program gracefully
+by pressing the 'Enter' button without inputting any text. If HAL has items to
+save to memory you will receive a success long term memory write of the
+memories once completed.
+
+You can find all of HALs long term memory items in the file designated in the
+configuration file option 'CHATBOT_LONGTERM_MEMORY' in the format
+'question | answer'.
+
+In order to make use of these long term memory questions and answers it is
+necessary to process the dataset again using 'python cb_data.py', you can then
+train the model for a number of steps of your choosing to add the long term
+memories to the model encoder and decoder.
+
+
+Assignment Specification Improvements
+=====================================
+1. Train on multiple data sets (Mandatory)
+-----------------------------------------
+The chat bot model is trained on three data sets:
+    - Chat bot specific data (see chat bot personality section)
+    - Cornell Movie-Dialogue Corpus [4]
+    - Self-Dialogue Corpus [5]
+
+2. Make your chat bot remember information from the previous conversation
+------------------------------------------------------------------------
+HAL has short-term memory functions to remember information about the current
+user such as their name, age, location, and favourite things. This information
+is not persisted across multiple chat bot interaction sessions.  Input parsing
+powers this short-term memory functionality, with automated responses being
+injected into the responses before the model attempts to predict a response.
+
+3. Create a chat bot with personality
+------------------------------------
+A selection of data is input to the model at the decoder phase to give the
+appearance the chat bot has a personality.  Information such as the bot's name,
+age, location, and job are included, along with a selection of quotes from
+HALs personality in the source film '2001: A Space Odyssey' [6]. Additional
+data to simulate chat bot personality such as customised exit messages and
+unknown response messages have been included but these are injected into the
+dialogue and not predicted by the model.  All chat bot personality data can
+be found in the following files in the 'chatbot_personality' directory:
+    - Consistent information: 'chatbot_direct_questions.txt'
+    - Personality information: 'chatbot_personality.txt'
+    - Exit messages: 'chatbot_exit_messages.txt'
+    - Unknown response messages: 'chatbot_unknown_response_messages.txt'
+    - Long term memory: 'chatbot_longterm_memory.txt'
+
+4. Use character-level sequence to sequence model for the chat bot
+------------------------------------------------------------------
+This improvement was not included in the chat bot as character level sequence to
+sequence modelling was implemented in assignment 1 of the NLP module. In its
+place a beam-search decoder was implemented instead, see section 6 'An
+improvement of your choice'.
+
+5. Create a feedback loop that allows users to train your chat bot
+------------------------------------------------------------------
+It is possible to teach HAL to remember correct answers to user questions. To
+implement this HAL will save any corrected answers to a long term memory file,
+which after processing using cb_data.py will be included in the model encoder
+and decoder. It is necessary to retrain the model after the encoder and decoder
+files have been updated so it includes these new long term memories. For more
+information see the 'ChatBot Usage' section 'Teaching HAL long-term with a
+feedback loop'.
+
+6. An improvement of your choice
+--------------------------------
+A number of improvements were made to the baseline chat bot model:
+    - Data pre-processing overhaul
+    - Adam optimiser
+    - Dropout normalisation
+    - Beam-search decoder
+    - Code cleanup
+    - Set max training size and training set percentage
+
+
+Links
+=====
+[1] https://github.com/Conchylicultor/DeepQA
+[2] https://docs.google.com/document/d/1GJfn2B6EI8JueDiBwzTAdD34d6pC99BSt6vldOmUCPQ/edit
+[3] https://github.com/chiphuyen/stanford-tensorflow-tutorials/tree/master/assignments/chatbot
+[4] https://www.cs.cornell.edu/~cristian/Cornell_Movie-Dialogs_Corpus.html
+[5] https://github.com/jfainberg/self_dialogue_corpus
+[6] https://en.wikiquote.org/wiki/2001:_A_Space_Odyssey_(film)

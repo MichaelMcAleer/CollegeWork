@@ -1,0 +1,11 @@
+The solution for Part 1 reads from the file 'part1_jobs.csv', to change
+the path edit the variable job_file_name on line 147.
+
+The .csv file takes the format:
+Line 1: Job,P1,P2
+Line 2..n: job_id (int), p1_time (int), p2_time (int)
+
+To run the file:
+
+$ python3 Pt1_JohnsonsRule.py
+
